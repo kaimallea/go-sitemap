@@ -33,20 +33,20 @@ type Url struct {
 }
 
 // Return number of <sitemap> elements within a <sitemapindex>
-func (s SitemapIndex) Length() int {
+func (s *SitemapIndex) Length() int {
 	return len(s.SitemapLocations)
 }
 
 // Return number of <url> elements within a <urlset> element
-func (s Sitemap) Length() int {
+func (s *Sitemap) Length() int {
 	return len(s.Urls)
 }
 
-func (s SitemapLocation) String() string {
+func (s *SitemapLocation) String() string {
 	return s.Loc
 }
 
-func (u Url) String() string {
+func (u *Url) String() string {
 	return u.Loc
 }
 
@@ -68,14 +68,14 @@ func fetchXML(url string) (data []byte, err error) {
 }
 
 // Fetch a remote sitemap index
-func FetchSitemapIndex(url string) (s SitemapIndex, err error) {
+func FetchSitemapIndex(url string) (s *SitemapIndex, err error) {
 	xmlData, err := fetchXML(url)
 	if err != nil {
 		return
 	}
 
-	s = SitemapIndex{}
-	err = xml.Unmarshal(xmlData, &s)
+	s = &SitemapIndex{}
+	err = xml.Unmarshal(xmlData, s)
 	if err != nil {
 		return
 	}
@@ -84,14 +84,14 @@ func FetchSitemapIndex(url string) (s SitemapIndex, err error) {
 }
 
 // Fetch a sitemap
-func FetchSitemap(url string) (s Sitemap, err error) {
+func FetchSitemap(url string) (s *Sitemap, err error) {
 	xmlData, err := fetchXML(url)
 	if err != nil {
 		return
 	}
 
-	s = Sitemap{}
-	err = xml.Unmarshal(xmlData, &s)
+	s = &Sitemap{}
+	err = xml.Unmarshal(xmlData, s)
 	if err != nil {
 		return
 	}
